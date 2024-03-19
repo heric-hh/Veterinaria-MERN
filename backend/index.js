@@ -5,10 +5,11 @@ import veterinarioRoutes from "./routes/veterinarioRoutes.js";
 
 const app = express();
 dotenv.config();
-
 conectarDb();
 
 app.use("/api/veterinarios", veterinarioRoutes);
+
+
 
 const PORT = process.env.PORT || 4000;
 
