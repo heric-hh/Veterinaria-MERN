@@ -1,13 +1,32 @@
 import express from "express";
 import dotenv from "dotenv";
+import cors from "cors";
 import conectarDb from "./config/db.js";
 import veterinarioRoutes from "./routes/veterinarioRoutes.js";
 import pacienteRoutes from "./routes/pacienteRoutes.js";
 
 const app = express();
 app.use(express.json());
+app.use(cors({
+    origin: (origin, callback) => {
+        const ACCEPTED_ORIGINS = [
+            "http://localhost:5173"
+        ]
+        if (ACCEPTED_ORIGINS.includes(origin)) {
+            return callback(null, true);
+        }
+
+        if (!origin) {
+            return callback(null, true);
+        }
+
+        return callback(new Error("NO permitido por CORS"));
+    }
+}));
+app.disable("x-powered-by");
 dotenv.config();
 conectarDb();
+
 
 app.use("/api/veterinarios", veterinarioRoutes);
 app.use("/api/pacientes", pacienteRoutes);

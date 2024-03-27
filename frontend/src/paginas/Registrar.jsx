@@ -1,25 +1,44 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
+import axios from "axios";
+
+import Alerta from "../components/Alerta";
+
 const Registrar = () => {
   const [ nombre, setNombre ] = useState("");
   const [ email, setEmail ] = useState("");
   const [ password, setPassword ] = useState("");
   const [ repetirPassword, setRepetirPassword ] = useState(""); 
+  const [ alerta, setAlerta ] = useState({});
   
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     if([nombre, email, password, repetirPassword].includes("")) {
-      console.log("Hay campos vacios");
+      setAlerta({msg:"Hay campos vacíos", err:true});
       return;
     }
     if( password !== repetirPassword) {
-      console.log("Las contrasenas no son iguales");
+      setAlerta({msg:"Las contrasenas no son iguales", err:true});
       return;
     }
     if(password.length < 6 ) {
-      console.log("La contraseña es muy corta");
+      setAlerta({msg:"La contraseña es muy corta. Agrega mínimo 6 caracteres", err:true});
+      return;
+    }
+    setAlerta({});
+
+    // Crear el usuario en la API
+    try {
+      const url = "http://localhost:4000/api/veterinarios";
+      const respuesta = await axios.post(url, { nombre, email, password } );
+      console.log(respuesta);
+    } catch (error) {
+      console.log(error);
     }
   }
+
+  const {msg} = alerta;
+
 
     return (
       <>
@@ -29,8 +48,10 @@ const Registrar = () => {
           </h1>
         </div>
         <div className="mt-20 md:mt-5 shadow-lg px-5 py-8 rounded-xl bg-white">
+          {
+            msg &&  <Alerta {...alerta} />
+          }       
           <form 
-            action="" 
             onSubmit={handleSubmit}
           >
             <div className="my-5">
