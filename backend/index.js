@@ -23,6 +23,7 @@ app.use(cors({
         return callback(new Error("NO permitido por CORS"));
     }
 }));
+
 app.disable("x-powered-by");
 dotenv.config();
 conectarDb();
