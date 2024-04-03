@@ -2,6 +2,7 @@ import Veterinario from "../models/Veterinario.js";
 import generarJWT from "../helpers/generarJWT.js";
 import generarID from "../helpers/generarId.js";
 import emailRegistro from "../helpers/emailRegistro.js";
+import emailOlvidePassword from "../helpers/emailOlvidePassword.js";
 
 const registrar = async (req, res) => {
 
@@ -66,7 +67,7 @@ const autenticar = async (req, res) => {
     //Comprobar si el usuario esta confirmado 
 
     if (!usuario.confirmado) {
-        const error = new Error("TU cuenta no ha sido confirmada");
+        const error = new Error("Tu cuenta no ha sido confirmada");
         return res.status(403).json({ msg: error.message });
     }
 
@@ -91,6 +92,14 @@ const olvidePassword = async (req, res) => {
     try {
         existeVeterinario.token = generarID();
         await existeVeterinario.save();
+
+        //Enviar email con instrucciones
+        emailOlvidePassword({
+            email,
+            nombre: existeVeterinario.nombre,
+            token: existeVeterinario.token
+        });
+
         res.json({ msg: "Hemos enviado un email con las instrucciones" });
     } catch (error) {
         console.log(error);
