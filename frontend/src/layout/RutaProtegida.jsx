@@ -6,10 +6,8 @@ import Footer from "../components/Footer";
 const RutaProtegida = () => {
     
     const {auth, cargando} = useAuth();
-    console.log(auth);
     
     if(cargando) {
-        console.log("cargando");
         return "cargando...";
     }
     return (
