@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthProvider";
+import { PacientesProvider } from "./context/PacientesProvider";
 import AuthLayout from "./layout/AuthLayout";
 import RutaProtegida from "./layout/RutaProtegida";
 
@@ -14,20 +15,22 @@ function App() {
   return (
    <BrowserRouter>
     <AuthProvider>
-      <Routes>
-        <Route path="/" element={<AuthLayout />}>
-          <Route index element={<Login/>} />
-          <Route path="registrar" element={<Registrar/>} />
-          <Route path="olvide-password" element={<OlvidePassword/>} />
-          <Route path="olvide-password/:token" element={<NuevoPassword/>} />
-          <Route path="confirmar-cuenta/:token" element={<ConfirmarCuenta/>} />
-        </Route>
+      <PacientesProvider>
+        <Routes>
+          <Route path="/" element={<AuthLayout />}>
+            <Route index element={<Login/>} />
+            <Route path="registrar" element={<Registrar/>} />
+            <Route path="olvide-password" element={<OlvidePassword/>} />
+            <Route path="olvide-password/:token" element={<NuevoPassword/>} />
+            <Route path="confirmar-cuenta/:token" element={<ConfirmarCuenta/>} />
+          </Route>
 
-        <Route path="/admin" element={<RutaProtegida />}>
-          <Route index element={<AdministrarPacientes />} />
+          <Route path="/admin" element={<RutaProtegida />}>
+            <Route index element={<AdministrarPacientes />} />
 
-        </Route>
-      </Routes>
+          </Route>
+        </Routes>
+      </PacientesProvider>
     </AuthProvider>
    </BrowserRouter>
   )

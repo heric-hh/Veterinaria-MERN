@@ -1,16 +1,20 @@
 import { useState } from "react"
 import Alerta from "./Alerta";
+import usePacientes from "../hooks/usePacientes";
+
 
 const Formulario = () => {
 
     const [nombre, setNombre] = useState("");
     const [propietario, setPropietario] = useState("");
     const [email, setEmail] = useState("");
-    const [fecha, setFecha] = useState(Date.now());
+    const [fecha, setFecha] = useState("");
     const [sintomas, setSintomas] = useState("");
 
     const [alerta, setAlerta] = useState({});
 
+    const {guardarPaciente} = usePacientes();
+    
     const handleSubmit = e => {
         e.preventDefault();
         
@@ -22,16 +26,21 @@ const Formulario = () => {
             });
             return;
         } 
+
+        setAlerta({});
+
+        guardarPaciente({nombre, propietario, email, fecha, sintomas});
     }
 
     const {msg} = alerta;
 
     return (
     <>
-        <p className="text-lg text-center mb-10">
-            Añade tus pacientes y {""}
-            <span className="text-indigo-600 font-bold">adminístralos</span>
-        </p>
+        <h2 className="font-black text-3xl text-center">Administrador de Pacientes</h2>
+         <p className="text-xl mt-5 mb-10 text-center">
+            Añade aquí tus pacientes y {""}
+              <span className="text-indigo-600 font-bold">Adminístralos</span> 
+          </p>
 
         <form
             onSubmit={handleSubmit} 
