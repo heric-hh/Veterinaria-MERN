@@ -10,6 +10,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [alerta, setAlerta] = useState({});
+
+  const {setAuth} = useAuth();
   
   const navigate = useNavigate();
 
@@ -26,6 +28,7 @@ const Login = () => {
     try {
       const {data} = await clienteAxios.post("/veterinarios/login", {email, password});
       localStorage.setItem("token", data.token);
+      setAuth(data);
       navigate("/admin");
     } catch (error) {
       setAlerta({

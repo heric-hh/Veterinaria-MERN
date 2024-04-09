@@ -3,10 +3,17 @@ import clienteAxios from "../config/axios";
 
 const AuthContext = createContext()
 
+// eslint-disable-next-line react/prop-types
 const AuthProvider = ({children}) => {
     
     const [cargando, setCargando] = useState(true);
     const [auth, setAuth] = useState({});
+
+
+    const cerrarSesion = () => {
+        localStorage.removeItem("token");
+        setAuth({});
+    }
 
     useEffect( () => {
         const autenticarUsuario = async () => {
@@ -43,7 +50,8 @@ const AuthProvider = ({children}) => {
             value={{
                 auth,
                 setAuth,
-                cargando
+                cargando,
+                cerrarSesion
             }}
         >
             {children}
