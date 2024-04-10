@@ -15,6 +15,10 @@ const AuthProvider = ({children}) => {
         setAuth({});
     }
 
+    const actualizarPerfil = datos => {
+        console.log(datos);
+    }
+
     useEffect( () => {
         const autenticarUsuario = async () => {
             const token = localStorage.getItem("token");
@@ -51,7 +55,8 @@ const AuthProvider = ({children}) => {
                 auth,
                 setAuth,
                 cargando,
-                cerrarSesion
+                cerrarSesion,
+                actualizarPerfil
             }}
         >
             {children}
