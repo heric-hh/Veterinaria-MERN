@@ -9,7 +9,7 @@ const EditarPerfil = () => {
     const [perfil, setPerfil] = useState({});
     const [alerta, setAlerta] = useState({});
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
         const {nombre, email} = perfil;
         if( [nombre, email].includes("") ) {
@@ -19,7 +19,9 @@ const EditarPerfil = () => {
             });
             return;
         }
-        actualizarPerfil(perfil);
+        
+        const resultado = await actualizarPerfil(perfil);
+        setAlerta(resultado);
     }
 
     const { msg } = alerta; 
