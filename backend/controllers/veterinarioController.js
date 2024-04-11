@@ -174,6 +174,32 @@ const actualizarPerfil = async (req, res) => {
 
 }
 
+const actualizarPassword = async (req, res) => {
+    //Leer los datos
+    const { id } = req.veterinario;
+    const { password_actual, password_nueva } = req.body;
+
+    //Comprobar que el veterinario existe
+    const veterinario = await Veterinario.findById(id);
+    if (!veterinario) {
+        const error = new Error("Hubo un error");
+        return res.status(400).json({ msg: error.message });
+    }
+
+    //Comprobar su password
+    if (await veterinario.comprobarPassword(password_actual)) {
+        veterinario.password = password_nueva;
+        await veterinario.save();
+        res.json({ msg: "Password Almacenado Correctamente" });
+    } else {
+        const error = new Error("La contraseña actual es incorrecta");
+        return res.status(400).json({ msg: error.message });
+    }
+
+
+    //Almacenar el password
+}
+
 export {
     registrar,
     perfil,
@@ -182,5 +208,6 @@ export {
     olvidePassword,
     comprobarToken,
     nuevoPassword,
-    actualizarPerfil
+    actualizarPerfil,
+    actualizarPassword
 }

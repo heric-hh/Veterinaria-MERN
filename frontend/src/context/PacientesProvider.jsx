@@ -1,5 +1,6 @@
 import {createContext, useState, useEffect} from "react";
 import clienteAxios from "../config/axios";
+import useAuth from "../hooks/useAuth";
 
 const PacientesContext = createContext();
 
@@ -7,13 +8,14 @@ const PacientesProvider = ({children}) => {
 
     const [pacientes, setPacientes] = useState([]);
     const [paciente, setPaciente] = useState({});
+    const {auth} = useAuth();
 
     const setEdicion = paciente => {
         setPaciente(paciente);
     }
 
     const eliminarPaciente = async id => {
-        const  confirmar = confirm("¿Confirmas que deseas eliminar?");
+        const confirmar = confirm("¿Confirmas que deseas eliminar?");
         if(confirmar) {
             try {
                 const token = localStorage.getItem("token");
@@ -23,7 +25,7 @@ const PacientesProvider = ({children}) => {
                         Authorization: `Bearer ${token}`
                     }
                 }
-                const {data} = await clienteAxios.delete(`/pacientes/${id}`, config);
+                await clienteAxios.delete(`/pacientes/${id}`, config);
                 const pacientesActualizado = pacientes.filter(pacientesState => pacientesState._id !== id );
                 setPacientes(pacientesActualizado);
             } catch (error) {
@@ -56,7 +58,7 @@ const PacientesProvider = ({children}) => {
             }
         }
         obtenerPacientes();
-    }, []);
+    }, [auth]);
 
     const guardarPaciente = async (paciente) => {
 
